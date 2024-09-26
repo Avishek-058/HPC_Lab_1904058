@@ -24,7 +24,7 @@ public class Table {
     public void movePhilosopherToSixthTable(Philosopher philosopher) {
         // Philosopher moves to the sixth table
         movedToSixthTable.add(philosopher);
-        System.out.println("Philosopher " + philosopher.getId() + " moved to the sixth table.");
+        System.out.println("Philosopher " + philosopher.getPhilosopherId() + " moved to the sixth table.");
         philosopher.releaseForks(); // Ensure forks are released before moving
     }
 
