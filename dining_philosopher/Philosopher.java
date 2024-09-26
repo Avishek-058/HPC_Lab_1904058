@@ -25,15 +25,18 @@ public class Philosopher extends Thread {
                 pickUpRightFork();
                 eat();
                 putDownForks();
+                
+                // If the table is deadlocked and the philosopher moves to the sixth table, break the loop
                 if (table.isDeadlocked()) {
                     table.movePhilosopherToSixthTable(this);
-                    break; // Exit once moved to the sixth table
+                    break; // Philosopher should stop after moving to the sixth table
                 }
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
+    
 
     private void think() throws InterruptedException {
         System.out.println("Philosopher " + id + " is thinking.");
