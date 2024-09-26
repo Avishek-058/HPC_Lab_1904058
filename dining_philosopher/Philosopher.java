@@ -8,7 +8,6 @@ public class Philosopher extends Thread {
     private final ReentrantLock leftFork;
     private final ReentrantLock rightFork;
     private final Table table;
-    private boolean isDeadlocked = false;
 
     public Philosopher(int id, ReentrantLock leftFork, ReentrantLock rightFork, Table table) {
         this.id = id;
@@ -61,24 +60,6 @@ public class Philosopher extends Thread {
         }
     }
 
-    public void releaseForks() {
-        if (leftFork.isHeldByCurrentThread()) {
-            leftFork.unlock();
-            System.out.println("Philosopher " + id + " put down left fork.");
-        }
-        if (rightFork.isHeldByCurrentThread()) {
-            rightFork.unlock();
-            System.out.println("Philosopher " + id + " put down right fork.");
-        }
-    }
-
-    public boolean isDeadlocked() {
-        return !rightFork.isHeldByCurrentThread() && leftFork.isHeldByCurrentThread();
-    }
-
-    public int getId() {
-        return id;
-    }
     private void putDownForks() {
         if (leftFork.isHeldByCurrentThread()) {
             leftFork.unlock();
@@ -88,4 +69,18 @@ public class Philosopher extends Thread {
             rightFork.unlock();
             System.out.println("Philosopher " + id + " put down right fork.");
         }
+    }
+
+    public void releaseForks() {
+        putDownForks();
+    }
+
+    public boolean isDeadlocked() {
+        return !rightFork.isHeldByCurrentThread() && leftFork.isHeldByCurrentThread();
+    }
+
+    // Add this method to return the philosopher's ID
+    public int getPhilosopherId() {
+        return id;
+    }
 }

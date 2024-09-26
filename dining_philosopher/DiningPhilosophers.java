@@ -10,6 +10,7 @@ public class DiningPhilosophers {
         Table[] tables = new Table[numTables];
         Philosopher[][] philosophers = new Philosopher[numTables][philosophersPerTable];
 
+        // Initialize tables and philosophers
         for (int i = 0; i < numTables; i++) {
             ReentrantLock[] forks = new ReentrantLock[philosophersPerTable];
             for (int j = 0; j < philosophersPerTable; j++) {
@@ -39,8 +40,7 @@ public class DiningPhilosophers {
         }
 
         System.out.println("Sixth table entered deadlock.");
-        System.out.println("Philosopher " + tables[numTables - 1].getLastMovedPhilosopher() 
+        System.out.println("Philosopher " + tables[numTables - 1].getLastMovedPhilosopher().getPhilosopherId() 
                            + " was the last to move before deadlock.");
     }
-}
 }
