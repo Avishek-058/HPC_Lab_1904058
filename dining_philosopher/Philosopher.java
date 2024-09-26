@@ -56,7 +56,7 @@ public class Philosopher extends Thread {
     }
 
     private boolean pickUpRightFork() {
-        if (rightFork.tryLock()) {
+        if (rightFork.Lock()) {
             System.out.println("Philosopher " + id + " picked up right fork.");
             return true; // Successfully picked up the right fork
         } else {
