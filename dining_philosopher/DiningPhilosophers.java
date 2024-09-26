@@ -36,11 +36,6 @@ public class DiningPhilosophers {
 
         // Monitor the sixth table for deadlock and termination
         while (!tables[numTables - 1].isDeadlocked()) {
-            if (tables[numTables - 1].isDeadlocked()) {
-                break; // Exit the loop if deadlock is detected
-            }
-
-            // Sleep for a short duration to allow other threads to proceed
             try {
                 Thread.sleep(100); // Adjust the sleep time as necessary
             } catch (InterruptedException e) {

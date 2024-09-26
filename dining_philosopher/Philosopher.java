@@ -21,11 +21,19 @@ public class Philosopher extends Thread {
             while (true) {
                 think();
                 pickUpLeftFork();
-                Thread.sleep(4000); // Simulate waiting for 4 seconds before trying to pick the right fork
-                pickUpRightFork();
-                eat();
-                putDownForks();
                 
+                // Retry to pick up the right fork a limited number of times
+                int attempts = 0;
+                while (attempts < 5) { // Limit the number of attempts
+                    if (pickUpRightFork()) {
+                        eat();
+                        putDownForks();
+                        break; // Exit the loop after eating
+                    }
+                    attempts++;
+                    Thread.sleep(100); // Wait before retrying to pick up the right fork
+                }
+
                 // If the table is deadlocked and the philosopher moves to the sixth table, break the loop
                 if (table.isDeadlocked()) {
                     table.movePhilosopherToSixthTable(this);
@@ -37,7 +45,6 @@ public class Philosopher extends Thread {
         }
     }
     
-
     private void think() throws InterruptedException {
         System.out.println("Philosopher " + id + " is thinking.");
         Thread.sleep(ThreadLocalRandom.current().nextInt(0, 10000));
@@ -48,11 +55,13 @@ public class Philosopher extends Thread {
         System.out.println("Philosopher " + id + " picked up left fork.");
     }
 
-    private void pickUpRightFork() {
+    private boolean pickUpRightFork() {
         if (rightFork.tryLock()) {
             System.out.println("Philosopher " + id + " picked up right fork.");
+            return true; // Successfully picked up the right fork
         } else {
             System.out.println("Philosopher " + id + " couldn't pick up right fork. Waiting...");
+            return false; // Failed to pick up the right fork
         }
     }
 
@@ -82,7 +91,6 @@ public class Philosopher extends Thread {
         return !rightFork.isHeldByCurrentThread() && leftFork.isHeldByCurrentThread();
     }
 
-    // Add this method to return the philosopher's ID
     public int getPhilosopherId() {
         return id;
     }
