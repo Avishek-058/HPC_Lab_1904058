@@ -16,8 +16,18 @@ public class Table {
     }
 
     public boolean isDeadlocked() {
-        // Logic to check deadlock: for the sixth table, check if 5 philosophers are there
-        return tableNumber == 5 && movedToSixthTable.size() >= 5;
+        // Check for deadlock: all philosophers at the table are trying to eat
+        if (tableNumber < 5) {
+            boolean allWaiting = true;
+            for (Philosopher philosopher : philosophers) {
+                if (!philosopher.isDeadlocked()) {
+                    allWaiting = false;
+                    break;
+                }
+            }
+            return allWaiting;
+        }
+        return movedToSixthTable.size() >= 5; // For the sixth table
     }
 
     public void movePhilosopherToSixthTable(Philosopher philosopher) {
